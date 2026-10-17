@@ -18,6 +18,7 @@ jobs:
             "${{ github.sha }}" "${{ github.run_number }}" "$REDEPLOYED" > site/build.json
 
       - name: Upload to Azure Storage
+      
         env:
           SAS: ${{ secrets.AZURE_SAS_TOKEN }}
         run: |
@@ -28,3 +29,5 @@ jobs:
             --content-cache-control "no-cache" \
             --output none
           echo "Site: https://${{ vars.STORAGE_ACCOUNT }}.blob.core.windows.net/site/index.html"
+      - name: Check Azure DNS
+        run: nslookup "${{ vars.STORAGE_ACCOUNT }}.blob.core.windows.net" 
